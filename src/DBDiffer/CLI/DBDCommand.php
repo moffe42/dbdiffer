@@ -89,9 +89,7 @@ class DBDCommand extends Command
                 $res1 = trim($res1);
                 $res2 = trim($res2);
 
-                if ($sqlDiffer->diff($res1, $res2)) {
-                    //$output->writeln("<info>{$tableName} is equal</info>");
-                } else {
+                if (!$sqlDiffer->diff($res1, $res2)) {
                     $errors[] = "{$tableName} is not equal";
                     $tmpName1 = tempnam("/tmp", "FOO");
                     $tmpName2 = tempnam("/tmp", "FOO");
@@ -112,7 +110,9 @@ class DBDCommand extends Command
             foreach ($errors as $error) {
                 $output->writeln("<error>{$error}</error>");
             }
-            die(1);
+            exit(1);
         }
+        $output->writeln("\n<fg=black;bg=green>It's all OK</fg=black;bg=green>\n");
+        $output->writeln(\PHP_Timer::resourceUsage());
     }
 }

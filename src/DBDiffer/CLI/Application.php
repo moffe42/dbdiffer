@@ -62,7 +62,7 @@ class Application extends BaseApplication
         if (!$input->hasParameterOption('--quiet')) {
             $output->write(
                 sprintf(
-                    "dbdiffer %s by Jacob Christiasnen.\n\n",
+                    "dbdiffer %s by Jacob Christiansen\n\n",
                     $this->getVersion()
                 )
             );
