@@ -2,11 +2,19 @@
 
 namespace jach\DBDiffer\CLI;
 
+use SebastianBergmann\Version;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\ArrayInput;
 
 class Application extends BaseApplication
 {
+    public function __construct()
+    {
+        $version = new Version('0.0.1', dirname(dirname(dirname(__DIR__))));
+        parent::__construct('dbdiffer', $version->getVersion());
+    }
     /**
      * Gets the name of the command based on input.
      *
@@ -47,5 +55,22 @@ class Application extends BaseApplication
         $inputDefinition->setArguments();
 
         return $inputDefinition;
+    }
+
+    public function doRun(InputInterface $input, OutputInterface $output)
+    {
+        if (!$input->hasParameterOption('--quiet')) {
+            $output->write(
+                sprintf(
+                    "dbdiffer %s by Jacob Christiasnen.\n\n",
+                    $this->getVersion()
+                )
+            );
+        }
+        if ($input->hasParameterOption('--version') ||
+            $input->hasParameterOption('-V')) {
+            exit;
+        }
+        parent::doRun($input, $output);
     }
 }

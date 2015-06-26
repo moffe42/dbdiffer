@@ -3,24 +3,33 @@
 namespace jach\DBDiffer\CLI;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Logger\ConsoleLogger;
 
 class DBDCommand extends Command
 {
     protected function configure()
     {
         $this->setName('diff')
-             ->setDescription('Diff SQL schema against a database');
+             ->setDescription('Diff SQL schema against a database')
+             ->addOption(
+                 'configuration',
+                 'c',
+                 InputOption::VALUE_OPTIONAL,
+                 'Configuration file'
+             );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        require(ROOT . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.php');
+        if ($input->getOption('configuration')) {
+            $configFile = $input->getOption('configuration');
+        } else {
+            $configFile = ROOT . DIRECTORY_SEPARATOR . 'config.php';
+        }
+        require($configFile);
 
         $dir = new \DirectoryIterator($config['sqlDir']);
 
