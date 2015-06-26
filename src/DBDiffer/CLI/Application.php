@@ -12,9 +12,10 @@ class Application extends BaseApplication
 {
     public function __construct()
     {
-        $version = new Version('0.0.1', dirname(dirname(dirname(__DIR__))));
+        $version = new Version('0.1.0', dirname(dirname(dirname(__DIR__))));
         parent::__construct('dbdiffer', $version->getVersion());
     }
+
     /**
      * Gets the name of the command based on input.
      *
