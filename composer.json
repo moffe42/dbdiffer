@@ -2,7 +2,7 @@
     "name": "jach/dbdiffer",
     "description": "Tool for diffing SQL table schemas against a running database",
     "require": {
-        "symfony/console": "^2.7",
+        "symfony/console": "^2.4",
         "psr/log": "^1.0",
         "sebastian/version": "^1.0",
         "phpunit/php-timer": "^1.0",
