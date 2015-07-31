@@ -28,7 +28,7 @@ class DBDCommand extends Command
         if ($input->getOption('configuration')) {
             $configFile = $input->getOption('configuration');
         } else {
-            $configFile = ROOT . DIRECTORY_SEPARATOR . 'config.php';
+            $configFile = 'config.php';
         }
         require($configFile);
 
