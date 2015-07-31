@@ -7,6 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
+use SebastianBergmann\Diff\Differ;
 
 class DBDCommand extends Command
 {
@@ -46,6 +47,7 @@ class DBDCommand extends Command
         $remoteDbTableFetcher = new \jach\DBDiffer\SQLTableFetcher\DatabaseSQLTableFetcher($dbRemote);
 
         $sqlDiffer = new \jach\DBDiffer\SQLDiffer();
+        $differ = new Differ("--- File\n+++ Database\n", false);
 
         $errors = [];
         foreach ($dir as $fileinfo) {
@@ -89,15 +91,10 @@ class DBDCommand extends Command
                 $res1 = trim($res1);
                 $res2 = trim($res2);
 
+                $sqlDiff = $differ->diff($res1, $res2);
                 if (!$sqlDiffer->diff($res1, $res2)) {
                     $errors[] = "{$tableName} is not equal";
-                    $tmpName1 = tempnam("/tmp", "FOO");
-                    $tmpName2 = tempnam("/tmp", "FOO");
-                    file_put_contents($tmpName1, $res1);
-                    file_put_contents($tmpName2, $res2);
-                    $errors[] = shell_exec("diff -u {$tmpName1} {$tmpName2}");
-                    unlink($tmpName1);
-                    unlink($tmpName2);
+                    $errors[] = $sqlDiff;
                 }
                 $progress->advance();
             }
