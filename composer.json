@@ -15,12 +15,14 @@
     "authors": [
         {
             "name": "Jacob Christiansen",
-            "email": "jacob@colourbox.com"
+            "email": "jacob@colourbox.com",
+            "role": "Developer"
         }
     ],
     "autoload": {
         "psr-4": {
             "jach\\DBDiffer\\": "src/DBDiffer/"
         }
-    }
+    },
+    "bin": ["bin/dbdiffer"]
 }
