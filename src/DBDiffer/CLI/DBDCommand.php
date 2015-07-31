@@ -99,6 +99,7 @@ class DBDCommand extends Command
                 $progress->advance();
             }
         }
+
         $progress->finish();
 
         $dbLocal->query('DROP DATABASE __dbdiffer');
