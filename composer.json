@@ -4,7 +4,7 @@
     "require": {
         "php": "^7.0",
         "ext-PDO": "*",
-        "symfony/console": "^2.4",
+        "symfony/console": "^3.2",
         "psr/log": "^1.0",
         "phpunit/php-timer": "^1.0",
         "sebastian/version": "^2.0",
