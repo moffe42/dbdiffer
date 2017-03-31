@@ -9,7 +9,7 @@ class Appllication extends AbstractApplication
 {
     public function __construct()
     {
-        $version = new Version('0.0.1', dirname(dirname(__DIR__)));
+        $version = new Version('1.0.0', dirname(dirname(__DIR__)));
         parent::__construct('DBDiffer', $version->getVersion());
     }
 }
