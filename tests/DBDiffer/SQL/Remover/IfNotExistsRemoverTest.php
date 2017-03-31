@@ -1,8 +1,11 @@
 <?php
+/* vim: set ts=4 sw=4 tw=0 et :*/
 
 namespace jach\DBDiffer\SQL\Remover;
 
-class IfNotExistsRemoverTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class IfNotExistsRemoverTest extends TestCase
 {
     public function testRemovesIfNotExistsPartOfCreateStatement()
     {
