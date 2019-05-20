@@ -6,12 +6,12 @@
         "ext-PDO": "*",
         "symfony/console": "^3.2",
         "psr/log": "^1.0",
-        "phpunit/php-timer": "^1.0",
+        "phpunit/php-timer": "^2.0",
         "sebastian/version": "^2.0",
-        "sebastian/diff": "^1.4"
+        "sebastian/diff": "^3.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.0"
+        "phpunit/phpunit": "^8.0"
     },
     "license": "MIT",
     "authors": [
