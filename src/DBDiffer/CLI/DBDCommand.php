@@ -32,12 +32,14 @@ class DBDCommand extends Command
         }
         require($configFile);
 
+        
         $dbLocal = new \PDO($config['database']['temp']['dsn'], $config['database']['temp']['username'], $config['database']['temp']['password']);
         $dbRemote = new \PDO($config['database']['master']['dsn'], $config['database']['master']['username'], $config['database']['master']['password']);
         
-        $dbCreator = new \jach\DBDiffer\SQL\DBCreator($dbLocal, $config['sqlDir']);
+        $dbManager = new \jach\DBDiffer\SQL\DBManager($dbLocal);
+        $stmtArr = (new \jach\DBDiffer\SQL\DBStatementCollector($config['sqlDir']))->collect();
         try {
-            $dbCreator->create();
+            $dbManager->create($stmtArr);
         } catch (\RuntimeException $e) {
             $output->writeln('');
             $output->writeln('<error>' . $e->getMessage() . '</error>');
@@ -46,24 +48,23 @@ class DBDCommand extends Command
         
         $dbObjDiffer = new \jach\DBDiffer\SQL\DBObjectDiffer($dbLocal, $dbRemote);
         
+        $dbObjDifferErrorArr = [];
         $progress = new ProgressBar($output, count($dbCreator->getStmtArr()));
-        $errors = array_reduce(
-            $dbCreator->getStmtArr(),
-            function ($result, $stmt) use ($progress, $dbObjDiffer) {
-                $stmtErrors = $dbObjDiffer->diff($stmt);
-                $progress->advance();
-                return array_merge($result, $stmtErrors);
-            },
-            []
-        );
+        foreach ($dbCreator->getStmtArr() as $stmt) {
+            $dbObjDifferResult = $dbObjDiffer->diff($stmt);
+            if(!$dbObjDifferResult->success) {
+                $dbObjDifferErrorArr[] = $dbObjDifferResult;
+            }
+            $progress->advance();
+        }
         $progress->finish();
 
-        $dbCreator->drop();
+        $dbManager->drop();
 
-        if (count($errors) > 0) {
+        if (count($dbObjDifferErrorArr) > 0) {
             $output->writeln("");
-            foreach ($errors as $error) {
-                $output->writeln("<error>{$error}</error>");
+            foreach ($dbObjDifferErrorArr as $dbObjDifferResult) {
+                $output->writeln("<error>{$dbObjDifferResult->message}</error>");
             }
             exit(1);
         }

@@ -22,13 +22,16 @@ class DBObjectIdentifier
         $parts = $this->_getStmtParts($sql);
 
         if (strtoupper($parts[0]) !== 'CREATE') {
-            return ['', ''];
+            return new \jach\DBDiffer\SQL\DBObjectIdentificationResult('', '');
         }
 
         foreach (['TABLE', 'VIEW', 'FUNCTION'] as $objKeyword) {
             $objKeywordIndex = array_search($objKeyword, array_map('strtoupper', $parts));
             if ($objKeywordIndex !== FALSE) {
-                return [$objKeyword, $this->_trimObjNamePart($parts[$objKeywordIndex + 1])];
+                return new \jach\DBDiffer\SQL\DBObjectIdentificationResult(
+                    $objKeyword, 
+                    $this->_trimObjNamePart($parts[$objKeywordIndex + 1])
+                );
             }
         }
 
