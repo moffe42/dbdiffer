@@ -7,7 +7,7 @@ final class DBObjectIdentificationResult
     public $objType;
     public $objName;
 
-    public function _construct(string $objType, string $objName)
+    public function __construct(string $objType, string $objName)
     {
         $this->objType = $objType;
         $this->objName = $objName;

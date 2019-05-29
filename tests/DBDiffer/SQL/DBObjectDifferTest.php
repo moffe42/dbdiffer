@@ -81,7 +81,9 @@ class DBObjectDifferTest extends TestCase
         );
 
         $dbObjDiffer = new DBObjectDiffer($this->mockDB1, $this->mockDB2);
-        $this->assertEquals([], $dbObjDiffer->diff($userprovidetCreateStmt));
+        $dbObjDifferResult = $dbObjDiffer->diff($userprovidetCreateStmt);
+        $this->assertInstanceOf('\jach\DBDiffer\SQL\DBObjectDifferResult', $dbObjDifferResult);
+        $this->assertSame(true, $dbObjDifferResult->success);
     }
 
     public function testDiffingUnequalStmt()
@@ -135,6 +137,8 @@ class DBObjectDifferTest extends TestCase
         );
 
         $dbObjDiffer = new DBObjectDiffer($this->mockDB1, $this->mockDB2);
-        $this->assertNotCount(0, $dbObjDiffer->diff($userprovidetCreateStmt));
+        $dbObjDifferResult = $dbObjDiffer->diff($userprovidetCreateStmt);
+        $this->assertInstanceOf('\jach\DBDiffer\SQL\DBObjectDifferResult', $dbObjDifferResult);
+        $this->assertSame(false, $dbObjDifferResult->success);
     }
 }
